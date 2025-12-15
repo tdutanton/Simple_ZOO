@@ -1,4 +1,6 @@
-public interface AnimalInfoProvider {
+package Animals;
+
+public interface IAnimalInfoProvider {
     String name();
     String type();
     String feedSchedule();
