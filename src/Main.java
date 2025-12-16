@@ -1,23 +1,36 @@
-import Animals.Animal;
-import Animals.Lion;
-import Animals.Owl;
-import Employees.Feeder;
+import Animals.*;
+import Employees.*;
+import Logging.*;
+import Reporting.ReportGenerator;
+import Services.ZooService;
+import Utils.*;
+import Zoo.Zoo;
 
 public class Main {
     public static void main(String[] args) {
-        Zoo z = new Zoo("Great zoo");
+        Logger logger = new ConsoleLogger();
+        IDGenerator animalIdGen = new SequentialIDGenerator();
+        IDGenerator employeeIdGen = new SequentialIDGenerator();
 
-        Animal lion = new Lion("SH", 15, 16, "asdas");
-        Animal owl = new Owl("HUHU", 2, 4, "ASDASD");
-        System.out.println(lion.id());
-        System.out.println(owl.id());
-        Feeder f = new Feeder("John");
+        Zoo zoo = new Zoo("Московский зоопарк");
+        ZooService zooService = new ZooService(zoo, animalIdGen, employeeIdGen, logger);
+        ReportGenerator reporter = new ReportGenerator(logger);
 
-        z.addAnimal(lion);
-        z.addAnimal(owl);
-        z.addEmployee(f);
+        Animal lion = new Lion(animalIdGen.nextId(), "Симба", 5, 14, "3 раза в день");
+        Animal turtle = new Turtle(animalIdGen.nextId(), "Черепавел", 368, 24.6F, "Один раз в день в 09-00");
+        Animal owl = new Owl(animalIdGen.nextId(), "Совунья", 30, 4.5F, "Один раз в день в 20-00");
 
-        ReportGenerator r = new ReportGenerator();
-        r.generateZooReport(z);
+        zooService.addAnimal(lion);
+        zooService.addAnimal(turtle);
+        zooService.addAnimal(owl);
+
+        Employee f = new Feeder(employeeIdGen.nextId(), "Иван");
+        Employee h = new Healer(employeeIdGen.nextId(), "Айболит");
+        Employee c = new Cleaner(employeeIdGen.nextId(), "Мария");
+        zooService.addEmployee(f);
+        zooService.addEmployee(h);
+        zooService.addEmployee(c);
+
+        reporter.generateZooReport(zoo);
     }
 }

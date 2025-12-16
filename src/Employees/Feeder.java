@@ -1,15 +1,15 @@
 package Employees;
 
-import Animals.Feedable;
+import Animals.Animal;
 
 public class Feeder extends Employee {
     static final String FEEDER_TYPE = "Кормильщик";
 
-    public Feeder(String name) {
-        super(FEEDER_TYPE, name);
+    public Feeder(Integer id, String name) {
+        super(id, FEEDER_TYPE, name);
     }
 
-    public void giveAFood(Feedable animal) {
+    public void giveAFood(Animal animal) {
         animal.feed();
     }
 }

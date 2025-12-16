@@ -1,27 +1,35 @@
 package Animals;
 
-public abstract class Animal implements IAnimalInfoProvider, Healable {
-    private static Integer nextId = 1;
-    protected final Integer id;
-    protected String type;
-    protected String name;
-    protected String feedSchedule;
-    protected Integer age;
-    protected float weight;
-    protected boolean isHealthChecked;
+import Reporting.IAnimalInfoProvider;
 
-    protected Animal(String name, Integer age, float weight) {
+public abstract class Animal implements IAnimalInfoProvider {
+    protected final Integer id;
+    protected final String type;
+    protected final String name;
+    protected final String feedSchedule;
+    protected final Integer age;
+    protected final float weight;
+    protected boolean isHealthChecked;
+    protected boolean isFeeded;
+    protected boolean isCleaned;
+    protected boolean isHealed;
+
+    protected Animal(Integer id, String type, String name, Integer age, float weight, String feedSchedule) {
+        this.id = id;
+        this.type = type;
         this.name = name;
         this.age = age;
         this.weight = weight;
-        isHealthChecked = false;
-        this.id = nextId;
-        nextId++;
+        this.feedSchedule = feedSchedule;
+        this.isHealthChecked = false;
+        this.isCleaned = false;
+        this.isFeeded = false;
+        this.isHealed = false;
     }
 
     public Integer id() {return id;}
 
-    // Animals.IAnimalInfoProvider implementation
+    // Reporting.IAnimalInfoProvider implementation
     public String name() {
         return name;
     }
@@ -47,9 +55,16 @@ public abstract class Animal implements IAnimalInfoProvider, Healable {
                 "Расписание кормления: %s", type(), name(), age(), weight(), feedSchedule());
     }
 
-    public void checkHealthFirstVisit() {
+    public void markAsHealthChecked() {
         this.isHealthChecked = true;
-        System.out.printf("%s по имени %s прошел первичную проверку у ветеринара.%n", this.type, this.name);
     }
+
+    public void feed() { isFeeded = true;}
+    public void heal() {isHealed = true;}
+    public void clean() {isCleaned = true;}
+
+    public boolean isFeeded() {return isFeeded;}
+    public boolean isCleaned() {return isCleaned;}
+    public boolean isHealed() {return isHealed;}
 
 }

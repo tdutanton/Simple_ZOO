@@ -1,19 +1,19 @@
 package Employees;
 
-public abstract class Employee implements IEmployeeInfoProvider {
-    private static Integer nextId = 1;
-    protected final Integer id;
-    protected String type;
-    protected String name;
+import Reporting.IEmployeeInfoProvider;
 
-    protected Employee(String type, String name) {
+public abstract class Employee implements IEmployeeInfoProvider {
+    protected final Integer id;
+    protected final String type;
+    protected final String name;
+
+    protected Employee(Integer id, String type, String name) {
         this.type = type;
         this.name = name;
-        this.id = nextId;
-        nextId++;
+        this.id = id;
     }
 
-    //Employees.IEmployeeInfoProvider implementation
+    //Reporting.IEmployeeInfoProvider implementation
     public String type() {return this.type;}
     public String name() {return this.name;}
 

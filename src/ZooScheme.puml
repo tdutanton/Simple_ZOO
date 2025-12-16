@@ -1,0 +1,205 @@
+@startuml
+title Zoo Management System - Class Diagram
+
+' ====== Пакет Zoo ======
+package Zoo {
+  class Zoo {
+    - name: String
+    - animals: List<Animal>
+    - employees: List<Employee>
+    + Zoo(name: String)
+    + name(): String
+    + addAnimal(animal: Animal): void
+    + addEmployee(employee: Employee): void
+    + animals(): List<IAnimalInfoProvider>
+    + employees(): List<IEmployeeInfoProvider>
+    + hasAnimalWithId(id: Integer): boolean
+    + hasEmployeeWithId(id: Integer): boolean
+  }
+}
+
+' ====== Пакет Animals ======
+package Animals {
+  abstract class Animal {
+    # id: Integer
+    # type: String
+    # name: String
+    # feedSchedule: String
+    # age: Integer
+    # weight: float
+    # isHealthChecked: boolean
+    # isFeeded: boolean
+    # isCleaned: boolean
+    # isHealed: boolean
+    + Animal(id: Integer, type: String, name: String, age: Integer, weight: float, feedSchedule: String)
+    + id(): Integer
+    + name(): String
+    + type(): String
+    + feedSchedule(): String
+    + age(): Integer
+    + weight(): float
+    + isHealthChecked(): boolean
+    + toString(): String
+    + markAsHealthChecked(): void
+    + feed(): void
+    + heal(): void
+    + clean(): void
+    + isFeeded(): boolean
+    + isCleaned(): boolean
+    + isHealed(): boolean
+  }
+
+  class Lion {
+    + TYPE: String
+    + Lion(id: Integer, name: String, age: Integer, weight: float, feedSchedule: String)
+  }
+
+  class Turtle {
+    + TYPE: String
+    + Turtle(id: Integer, name: String, age: Integer, weight: float, feedSchedule: String)
+  }
+
+  class Owl {
+    + TYPE: String
+    + Owl(id: Integer, name: String, age: Integer, weight: float, feedSchedule: String)
+  }
+
+  Animal <|-- Lion
+  Animal <|-- Turtle
+  Animal <|-- Owl
+}
+
+' ====== Пакет Employees ======
+package Employees {
+  abstract class Employee {
+    # id: Integer
+    # type: String
+    # name: String
+    + Employee(id: Integer, type: String, name: String)
+    + id(): Integer
+    + type(): String
+    + name(): String
+    + toString(): String
+  }
+
+  class Cleaner {
+    + CLEANER_TYPE: String
+    + Cleaner(id: Integer, name: String)
+    + cleanRoom(animal: Animal): void
+  }
+
+  class Feeder {
+    + FEEDER_TYPE: String
+    + Feeder(id: Integer, name: String)
+    + giveAFood(animal: Animal): void
+  }
+
+  class Healer {
+    + HEALER_TYPE: String
+    + Healer(id: Integer, name: String)
+    + healAnimal(animal: Animal): void
+  }
+
+  Employee <|-- Cleaner
+  Employee <|-- Feeder
+  Employee <|-- Healer
+}
+
+' ====== Пакет Reporting ======
+package Reporting {
+  interface IAnimalInfoProvider {
+    + name(): String
+    + type(): String
+    + feedSchedule(): String
+    + age(): Integer
+    + weight(): float
+    + isHealthChecked(): boolean
+  }
+
+  interface IEmployeeInfoProvider {
+    + type(): String
+    + name(): String
+  }
+
+  class ReportGenerator {
+    - logger: Logger
+    + ReportGenerator(logger: Logger)
+    + generateAnimalsReport(animals: List<IAnimalInfoProvider>): void
+    + generateEmployeesReport(employees: List<IEmployeeInfoProvider>): void
+    + generateZooReport(zoo: Zoo): void
+  }
+}
+
+' ====== Пакет Logging ======
+package Logging {
+  interface Logger {
+    + info(message: String): void
+  }
+
+  class ConsoleLogger {
+    + ConsoleLogger()
+    + info(message: String): void
+  }
+
+  Logger <|.. ConsoleLogger
+}
+
+' ====== Пакет Utils ======
+package Utils {
+  interface IDGenerator {
+    + nextId(): Integer
+  }
+
+  class SequentialIDGenerator {
+    - current: int
+    + SequentialIDGenerator()
+    + nextId(): Integer
+  }
+
+  IDGenerator <|.. SequentialIDGenerator
+}
+
+' ====== Пакет Services ======
+package Services {
+  class ZooService {
+    - zoo: Zoo
+    - logger: Logger
+    + ZooService(zoo: Zoo, animalIdGen: IDGenerator, employeeIdGen: IDGenerator, logger: Logger)
+    + addAnimal(animal: Animal): void
+    + addEmployee(employee: Employee): void
+    + cleanAnimal(animal: Animal, cleaner: Cleaner): void
+    + feedAnimal(animal: Animal, feeder: Feeder): void
+    + healAnimal(animal: Animal, healer: Healer): void
+  }
+}
+
+' ====== Отношения наследования и реализации ======
+Animal ..|> IAnimalInfoProvider
+Employee ..|> IEmployeeInfoProvider
+
+' ====== Отношения использования (Dependency) ======
+ZooService --> Zoo
+ZooService --> Logger
+ZooService --> Animal
+ZooService --> Employee
+ZooService --> Cleaner
+ZooService --> Feeder
+ZooService --> Healer
+
+ReportGenerator --> Logger
+ReportGenerator --> IAnimalInfoProvider
+ReportGenerator --> IEmployeeInfoProvider
+ReportGenerator --> Zoo
+
+Cleaner --> Animal
+Feeder --> Animal
+Healer --> Animal
+
+Zoo --> Animal
+Zoo --> Employee
+
+' ====== Отношения агрегации/композиции ======
+Zoo "1" *-- "*" Animal
+Zoo "1" *-- "*" Employee
+
+@enduml

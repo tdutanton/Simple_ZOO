@@ -1,19 +1,19 @@
 package Employees;
 
-import Animals.Healable;
+import Animals.Animal;
 
 public class Healer extends Employee{
     static final String HEALER_TYPE = "Ветеринар";
 
-    public Healer(String name) {
-        super(HEALER_TYPE, name);
+    public Healer(Integer id, String name) {
+        super(id, HEALER_TYPE, name);
     }
 
-    public void healAnimal(Healable animal) {
+    public void healAnimal(Animal animal) {
         animal.heal();
     }
 
-    public void makeFirstHealthCheck(Healable animal) {
-        animal.checkHealthFirstVisit();
+    public void makeFirstHealthCheck(Animal animal) {
+        animal.markAsHealthChecked();
     }
 }

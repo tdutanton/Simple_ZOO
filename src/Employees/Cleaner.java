@@ -1,15 +1,15 @@
 package Employees;
 
-import Animals.Cleanable;
+import Animals.Animal;
 
 public class Cleaner extends Employee{
     static final String CLEANER_TYPE = "Уборщик";
 
-    public Cleaner(String name) {
-        super(CLEANER_TYPE, name);
+    public Cleaner(Integer id, String name) {
+        super(id, CLEANER_TYPE, name);
     }
 
-    public void cleanRoom(Cleanable animal) {
+    public void cleanRoom(Animal animal) {
         animal.clean();
     }
 }
