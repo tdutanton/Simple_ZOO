@@ -55,3 +55,6 @@ protected boolean isHealed;
 5. Сервисный слой (ZooService) — выделение бизнес-логики. Вся логика добавления, очистки, кормления сосредоточена в одном месте.  
 
 ![](ZooScheme.png)
+
+# Автор:  
+Anton Evgenev tg: @tdutanton
